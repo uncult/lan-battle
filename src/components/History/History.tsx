@@ -13,9 +13,15 @@ interface History {
 
 export const History = () => {
 	const [history, setHistory] = useState<History[]>([]);
-	const [height, setHeight] = useState("50%"); // initial height
+	const [height, setHeight] = useState(
+		localStorage.getItem("lan-battle-height") || "50%"
+	);
 
 	const socket = useContext(SocketContext);
+
+	useEffect(() => {
+		localStorage.setItem("lan-battle-height", height);
+	}, [height]);
 
 	useEffect(() => {
 		const handleHistory = (history: History[]) => {
@@ -40,7 +46,11 @@ export const History = () => {
 	const TopHandleComponent = () => {
 		let timeoutId: NodeJS.Timeout | null = null;
 
-		const handleMouseDown = () => {
+		const handleMouseDown = (event: React.MouseEvent) => {
+			if (event.button !== 0) {
+				return;
+			}
+
 			timeoutId = setTimeout(toggleHistory, 200);
 		};
 
@@ -57,6 +67,11 @@ export const History = () => {
 		);
 	};
 
+	const onResizeStop = (e: any, direction: any, ref: any, d: any) => {
+		setHeight(ref.style.height);
+		localStorage.setItem("lan-battle-height", ref.style.height);
+	};
+
 	return (
 		<Resizable
 			size={{ width: "100%", height: height }}
@@ -64,11 +79,9 @@ export const History = () => {
 				top: <TopHandleComponent />,
 			}}
 			handleStyles={{
-				top: { height: "4px", marginTop: "-4px", pointerEvents: "none" }, // Push the original handle out of the visible area
+				top: { height: "4px", marginTop: "-4px", pointerEvents: "none" },
 			}}
-			onResizeStop={(e, direction, ref, d) => {
-				setHeight(ref.style.height);
-			}}
+			onResizeStop={onResizeStop}
 			enable={{
 				top: true,
 			}}
