@@ -44,6 +44,7 @@ export const MainSection = styled.div`
 `;
 
 export const LeftSection = styled.div`
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	color: #fff;
