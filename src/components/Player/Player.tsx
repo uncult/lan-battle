@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import YouTube, { YouTubeProps } from "react-youtube";
 import { ErrorMessage, IframeContainer } from "./Player.styled";
-import { SocketContext } from "../utils/context/SocketProvider";
+import { SocketContext } from "../../utils/context/SocketProvider";
 import { VolumeControl } from "./VolumeControl";
 
 export type YouTubePlayer = {

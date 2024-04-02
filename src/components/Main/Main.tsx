@@ -23,7 +23,7 @@ import { setUsers } from "../../actions/users.actions";
 import usePageVisibility from "../../utils/usePageVisibility";
 import soundFile from "../../sound/ohoh.mp3";
 import { handlePaste } from "./Main.utils";
-import Player from "../../Player/Player";
+import Player from "../Player/Player";
 import History from "../History/History";
 
 export const Main = () => {
