@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const UserListContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	width: 250px;
 	background-color: #17212b;
 	color: #f5f5d9;
 	border: 1px solid #101921;

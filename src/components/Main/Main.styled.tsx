@@ -32,13 +32,13 @@ export const ChatContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
-	flex: 1;
+	flex: 2;
 	box-sizing: border-box;
 `;
 
 export const MainSection = styled.div`
 	display: flex;
-	flex: 0 60%;
+	flex: 7;
 	color: #fff;
 	background-color: #070b11;
 `;
@@ -48,5 +48,6 @@ export const LeftSection = styled.div`
 	display: flex;
 	flex-direction: column;
 	color: #fff;
+	flex: 1;
 	width: 250px;
 `;
