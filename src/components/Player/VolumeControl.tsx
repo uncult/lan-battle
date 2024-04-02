@@ -20,7 +20,6 @@ export const VolumeControl = ({ playerRef }: Props) => {
 	}, 20);
 
 	const onVolumeChange = (newVolume: number) => {
-		console.log(newVolume);
 		debouncedSetVolume(newVolume);
 	};
 

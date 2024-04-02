@@ -28,3 +28,14 @@ export const handlePaste = (
 		}
 	}
 };
+
+export const extractTimeFrom = (url: string) => {
+	try {
+		const urlObj = new URL(url);
+		const params = new URLSearchParams(urlObj.search);
+		return params.get("t");
+	} catch (e) {
+		console.error("Invalid URL");
+		return null;
+	}
+};

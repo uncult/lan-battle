@@ -22,7 +22,7 @@ import UserList from "../UserList/UserList";
 import { setUsers } from "../../actions/users.actions";
 import usePageVisibility from "../../utils/usePageVisibility";
 import soundFile from "../../sound/ohoh.mp3";
-import { handlePaste } from "./Main.utils";
+import { extractTimeFrom, handlePaste } from "./Main.utils";
 import Player from "../Player/Player";
 import History from "../History/History";
 
@@ -51,9 +51,12 @@ export const Main = () => {
 			case "stop":
 			case "play":
 				const url = commandArgs?.[1];
+				const startFrom = extractTimeFrom(url) ?? 0;
+
 				socket?.emit("command", {
 					command: commandArgs?.[0],
 					url,
+					startFrom,
 				});
 				break;
 			default:

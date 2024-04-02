@@ -123,8 +123,6 @@ const Player: React.FC = () => {
 		if (preloadedVideo && isPlayerReady) {
 			const { videoId, startTime } = getPlayVideo(preloadedVideo);
 
-			console.log(videoId, startTime);
-
 			const loadAndPlayVideo = () => {
 				try {
 					if (playerRef.current) {
