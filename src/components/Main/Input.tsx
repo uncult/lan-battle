@@ -1,4 +1,4 @@
-import { useCallback, useContext, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { ChatInputContainer, ChatInputField } from "./Main.styled";
 import { debounce } from "lodash";
@@ -24,8 +24,7 @@ export const ChatInput = () => {
 		index: -1,
 	});
 
-	const [showSuggestions, setShowSuggestions] = useState(false);
-	const [suggestions, setSuggestions] = useState<string[]>([]);
+	const [lastCommand, setLastCommand] = useState("");
 
 	const commands = ["!play", "!pause", "!stop"];
 
@@ -68,6 +67,7 @@ export const ChatInput = () => {
 	const debouncedStopTyping = useCallback(
 		debounce(() => {
 			socket?.emit("typing", { user, typing: false });
+
 			setTyping(false);
 		}, 1000),
 		[socket]
@@ -90,6 +90,14 @@ export const ChatInput = () => {
 
 	const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		switch (e.key) {
+			case "Tab":
+				e.preventDefault(); // Prevent the default behavior
+				if (getMatchingCommand(inputText)) {
+					const command = getMatchingCommand(inputText);
+
+					setInputText(command + " ");
+				}
+				break;
 			case "ArrowUp":
 				e.preventDefault(); // Prevent the default behavior
 				const newIndex = Math.min(
@@ -120,22 +128,54 @@ export const ChatInput = () => {
 		}
 	};
 
+	const getMatchingCommand = (input: string) => {
+		const inputCommand = input.split(" ")[0];
+
+		if (input.split(" ")[1]) {
+			return "";
+		}
+
+		return commands.find((cmd) => cmd.startsWith(inputCommand));
+	};
+
+	useEffect(() => {
+		if (inputText.startsWith("!")) {
+			const command = getMatchingCommand(inputText);
+
+			if (command) {
+				setLastCommand(command);
+			} else {
+				setLastCommand("");
+			}
+		} else {
+			setLastCommand("");
+		}
+	}, [inputText, commands]);
+
 	if (!user) {
 		return null;
 	}
 
 	return (
-		<ChatInputContainer>
+		<ChatInputContainer style={{ position: "relative" }}>
 			<ChatInputField
 				ref={inputRef}
-				placeholder="Type your message..."
 				onInput={setInput}
 				onKeyDown={handleKey}
 				value={inputText}
+				placeholder="Type a message..."
 				autoFocus
 				onPaste={(event: React.ClipboardEvent<HTMLInputElement>) =>
 					handlePaste(event, socket, user)
 				}
+			/>
+			<ChatInputField
+				style={{
+					pointerEvents: "none",
+					position: "absolute",
+					color: "#6c7883",
+				}}
+				placeholder={lastCommand}
 			/>
 		</ChatInputContainer>
 	);

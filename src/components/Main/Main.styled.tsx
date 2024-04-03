@@ -20,6 +20,7 @@ export const ChatInputField = styled.input`
 	font-size: 16px;
 	color: #6c7883;
 	font-size: 14px;
+	z-index: 0;
 `;
 
 export const Wrapper = styled.div`
